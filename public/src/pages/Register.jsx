@@ -131,7 +131,7 @@ const FormContainer = styled.div`
 
     }
     button {
-        background-color: #2d3191;
+        background-color: #7041f2;
         color: white;
         padding: 1rem 2rem;
         border: none;
@@ -139,6 +139,7 @@ const FormContainer = styled.div`
         cursor: pointer;
         border-radius: 0.4rem;
         font-size: 1rem;
+        transition: 0.5s ease-in-out;
         &:hover{
             background-color: #4e0eff;
         }

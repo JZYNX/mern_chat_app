@@ -21,8 +21,32 @@ export default function SetAvatar(){
         draggable: true,
         theme: "dark",
     }
-    const setProfilePicture = async () => {
 
+    useEffect(() => {
+        async function checkAvatar(){
+            if (!localStorage.getItem("mern-chat-app-user")){
+                navigate('/login');
+            }
+        }
+        checkAvatar();       
+    }, []);
+
+    const setProfilePicture = async () => {
+        if(selectedAvatar === undefined){
+            toast.error("Please select an avatar", toastOptions);
+        } else {
+            const user = await JSON.parse(localStorage.getItem("mern-chat-app-user"));
+            const {data} = await axios.post(`${setAvatarRoute}/${user._id}`,{
+                image: avatars[selectedAvatar],
+            });
+
+            if (data.isSet){
+                user.isAvatarImageSet = true;
+                user.avatarImage = data.image;
+                localStorage.setItem("mern-chat-app-user", JSON.stringify(user));
+                navigate('/');
+            } 
+        }
     };
     useEffect(() => {
         async function getAvatar() {
@@ -41,7 +65,11 @@ export default function SetAvatar(){
       }, []);
     return (
         <>
-            <Container>
+        {
+            isLoading ? <Container>
+                <img src = {loader} alt = "loader" className='loader' />
+            </Container> : (
+                <Container>
                 <div className='title-container'>
                     <h1>Pick an avatar as your profile picture</h1>
                 </div>
@@ -64,8 +92,13 @@ export default function SetAvatar(){
                         )
                     })}
                 </div>
-            <ToastContainer/>
+                <button className='submit-btn' onClick={setProfilePicture}>
+                    Set as Profile Picture
+                </button>
             </Container>
+        )}   
+        <ToastContainer/>
+
         </>
     )
 }
@@ -110,6 +143,19 @@ const Container = styled.div`
             border: 0.4rem solid #4e0eff;
         }
     }
-    
-
+    .submit-btn{
+        background-color: #7041f2;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 0.4rem;
+        font-size: 1rem;
+        transition: 0.5s ease-in-out;
+        text-transform: uppercase;
+        &:hover{
+            background-color: #4e0eff;
+        }
+    }  
 `;
