@@ -90,11 +90,11 @@ const Container = styled.div`
     overflow: auto;
     gap: 0.8rem;
     &::-webkit-scrollbar {
-      width: 0.2rem;
-      &-thumb {
-        background-color: #ffffff39;
-        width: 0.1rem;
-        border-radius: 1rem;
+    width: 0.2rem;
+    &-thumb {
+      background-color: #ffffff39;
+      width: 0.1rem;
+      border-radius: 1rem;
       }
     }
     .contact {
